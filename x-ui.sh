@@ -316,6 +316,11 @@ check_config() {
         echo -e "${green}Database: SQLite (/etc/x-ui/x-ui.db)${plain}"
     fi
 
+    # Show the panel API token. -getApiToken returns the existing token, or mints
+    # an "install" one if none exists, so this is safe to run at any time.
+    local existing_apiToken=$(${xui_folder}/x-ui setting -getApiToken true | grep -Eo 'apiToken: .+' | awk '{print $2}')
+    echo -e "${green}API Token: ${existing_apiToken}${plain}"
+
     local existing_webBasePath=$(echo "$info" | grep -Eo 'webBasePath: .+' | awk '{print $2}')
     local existing_port=$(echo "$info" | grep -Eo 'port: .+' | awk '{print $2}')
     local existing_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
